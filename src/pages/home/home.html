@@ -1,14 +1,34 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      Projeto Ca
     </ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-content>
+  <div class="home">
+    <div class="cardLogin">
+      <ion-list>
+
+        <ion-item class="item">
+          <ion-label>R.A:</ion-label>
+          <ion-input type="text" [(ngModel)]="usuario"></ion-input>
+        </ion-item>
+
+        <ion-item class="item">
+          <ion-label>Senha:</ion-label>
+          <ion-input type="password" [(ngModel)]="senha"></ion-input>
+        </ion-item>
+
+      </ion-list>
+      <div>
+          <button ion-button color="danger" round (click)="login()">Login</button>
+      </div>
+
+      <p>{{retorno}}</p>
+
+    </div>
+  </div>
+
 </ion-content>

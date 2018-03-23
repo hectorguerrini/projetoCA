@@ -13,20 +13,18 @@
 
         <ion-item class="item">
           <ion-label>R.A:</ion-label>
-          <ion-input type="text" [(ngModel)]="usuario"></ion-input>
+          <ion-input type="text" [(ngModel)]="usuario.registro" Mask="99.99999-9"></ion-input>
         </ion-item>
 
         <ion-item class="item">
           <ion-label>Senha:</ion-label>
-          <ion-input type="password" [(ngModel)]="senha"></ion-input>
+          <ion-input type="password" [(ngModel)]="usuario.senha" (keyup.enter)="login()"></ion-input>
         </ion-item>
 
       </ion-list>
       <div>
           <button ion-button color="danger" round (click)="login()">Login</button>
       </div>
-
-      <p>{{retorno}}</p>
 
     </div>
   </div>

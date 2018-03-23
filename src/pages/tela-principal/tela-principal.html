@@ -1,7 +1,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>telaPrincipal</ion-title>
+    <ion-title>{{vendedor.nome}}</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -10,8 +10,9 @@
 <ion-content>
   <ion-card>
     <ion-card-header>
-      <ion-icon name="cart"></ion-icon>
+      <ion-icon name="cart" item-start></ion-icon>
       Venda
+
     </ion-card-header>
     <ion-list class="select">
 
@@ -36,6 +37,7 @@
     </ion-list>
     <ion-list *ngIf="comprador.tipo && buscar">
       <button ion-item (click)="getInfos()">
+        <ion-icon name="search" item-start></ion-icon>
         Buscar
       </button>
     </ion-list>
@@ -81,6 +83,12 @@
         <ion-label class="result">{{comprador.valor}}</ion-label>
       </ion-item>
 
+    </ion-list>
+    <ion-list *ngIf="comprador.tipo=='0' && comprador.nome">
+      <button ion-item (click)="updateVenda()" >
+          <ion-icon name="checkmark" item-start></ion-icon>
+        Finalizar venda
+      </button>
     </ion-list>
 
 

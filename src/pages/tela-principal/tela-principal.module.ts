@@ -1,15 +1,17 @@
 import { NgModule } from '@angular/core';
 import { IonicPageModule } from 'ionic-angular';
 import { TelaPrincipalPage } from './tela-principal';
-import { MaskDirective } from './app.directive';
+import { telaMaskDirective } from './tela.directive';
 
 @NgModule({
   declarations: [
     TelaPrincipalPage,
-    MaskDirective
+    telaMaskDirective
+
   ],
   imports: [
-    IonicPageModule.forChild(TelaPrincipalPage),
+    IonicPageModule.forChild(TelaPrincipalPage)
+
   ],
 })
 export class TelaPrincipalPageModule {}

@@ -45,8 +45,8 @@
     <ion-list *ngIf="comprador.tipo=='0' && comprador.nome" class="select">
 
       <ion-item>
-        <ion-label>Nome:</ion-label>
-        <ion-label class="result">{{comprador.nome}}</ion-label>
+
+        <ion-label style="text-align:center;">{{comprador.nome}}</ion-label>
       </ion-item>
 
       <ion-item>
@@ -66,8 +66,8 @@
     <ion-list *ngIf="comprador.tipo=='1' && (comprador.nome || comprador.novo)" class="select">
 
       <ion-item>
-        <ion-label>Nome:</ion-label>
-        <ion-label *ngIf="!comprador.novo" class="result">{{comprador.nome}}</ion-label>
+        <ion-label *ngIf="comprador.novo">Nome:</ion-label>
+        <ion-label *ngIf="!comprador.novo" style="text-align:center;">{{comprador.nome}}</ion-label>
         <ion-input *ngIf="comprador.novo" type="text" [(ngModel)]="comprador.nome"></ion-input>
       </ion-item>
 

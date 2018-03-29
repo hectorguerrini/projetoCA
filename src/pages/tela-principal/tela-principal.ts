@@ -6,6 +6,7 @@ import { Storage } from "@ionic/storage";
 import { Session } from './../../providers/session/session';
 import { Usuario } from '../../app/models/usuario';
 import { Data } from '../../app/models/data';
+import { AlertController } from 'ionic-angular';
 
 @IonicPage()
 @Component({
@@ -15,10 +16,10 @@ import { Data } from '../../app/models/data';
 })
 export class TelaPrincipalPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public service: PcaProvider,public session: Session,public storage: Storage) {
+  constructor(public navCtrl: NavController, public navParams: NavParams,public service: PcaProvider,public session: Session,public storage: Storage,public alertCtrl: AlertController) {
     this.vendedor = navParams.data;
   }
-  vendedor ={};
+  vendedor: Usuario;
   ngOnInit(){
     this.session.get()
     .then(res => {
@@ -97,34 +98,46 @@ export class TelaPrincipalPage {
     // }
   }
   updateVenda(){
-        this.service.updateVenda('update_venda',this.comprador.id,this.vendedor.id_aluno,this.comprador.valor.replace('R$ ','').replace(',','.'),null,this.comprador.sexo)
+        this.service.updateVenda(
+          'update_venda',
+          this.comprador.id,
+          this.vendedor.id_aluno,
+          this.comprador.valor.replace('R$ ','').replace(',','.'),
+          null,
+          this.comprador.sexo
+        )
         .subscribe((data:Data) =>{
           if(data.message){
-            console.log(data)
+            this.zerarForm('save');
+
+          }else{
+
+            var alert = this.alertCtrl.create({
+              title: 'Erro ao finalizar venda',
+              subTitle: 'Venda já registrada em '+data.jsonRetorno[0].data_venda+' .',
+              buttons: ['OK']
+            });
+            alert.present();
 
           }
-
-
         })
-
-
   }
 
+  zerarForm(evento){
+    this.comprador.id = null;
+    this.comprador.nome = null;
+    this.comprador.sexo = null;
+    this.comprador.novo = null;
+    this.comprador.registro = evento == 'save'?null:this.comprador.registro;
+    this.buscar = true;
 
-
+  }
   registroChange(){
     if(this.comprador.tipo=='0' && this.comprador.registro.length<10 && this.comprador.nome){
-      this.comprador.id=null;
-      this.comprador.nome=null;
-      this.comprador.sexo=null;
-      this.buscar=true;
+      this.zerarForm('change');
 
     }else if(this.comprador.tipo=='1' && this.comprador.registro.length<14 && (this.comprador.nome || this.comprador.novo)){
-      this.comprador.id=null;
-      this.comprador.nome=null;
-      this.comprador.sexo=null;
-      this.comprador.novo=null;
-      this.buscar=true;
+      this.zerarForm('change');
     }
   }
 

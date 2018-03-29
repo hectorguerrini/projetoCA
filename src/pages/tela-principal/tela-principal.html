@@ -2,8 +2,12 @@
 
   <ion-navbar>
     <ion-title>{{vendedor.nome}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="openSettings($event)">
+        <ion-icon name="settings"></ion-icon>
+      </button>
+    </ion-buttons>
   </ion-navbar>
-
 </ion-header>
 
 
@@ -93,5 +97,5 @@
 
 
   </ion-card>
-
+  
 </ion-content>

@@ -1,29 +1,32 @@
-import {Directive, Input} from '@angular/core';
-import {NgModel} from '@angular/forms';
-
+import { Directive, Input } from '@angular/core';
+import { NgModel } from '@angular/forms';
+/**
+ * Generated class for the MaskInputDirective directive.
+ *
+ * See https://angular.io/api/core/Directive for more info on Angular
+ * Directives.
+ */
 @Directive({
   selector: '[Mask]',
   host: {
-    '(keyup)': 'onInputChange()'
+    '(keyup)': 'onInputChange($event)'
   }
 })
-export class MaskDirective {
+export class MaskInputDirective {
 
-
-  constructor(
-    public model: NgModel,
-
-  ) {
-
+  constructor( public model: NgModel) {
   }
   @Input("Mask") Mask: string;
 
 
-  onInputChange() {
+  onInputChange(ev) {
     var valor = this.model.value.replace(/\D/g, '');
     var pad = this.Mask.replace(/\D/g, '').replace(/9/g, '_');
     var valorMask = valor + pad.substring(0, pad.length - valor.length);
-
+    
+    if(ev.keyCode==8){
+      return;
+    }
 
 
     var valorMaskPos = 0;
@@ -43,8 +46,5 @@ export class MaskDirective {
     this.model.viewToModelUpdate(this.model.value);
     this.model.valueAccessor.writeValue(valor)
   }
-
-
-
 
 }

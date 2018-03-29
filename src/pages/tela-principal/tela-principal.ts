@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams,PopoverController } from 'ionic-angular';
 import { PcaProvider } from '../../providers/pca/pca';
 
 import { Storage } from "@ionic/storage";
 import { Session } from './../../providers/session/session';
 import { Usuario } from '../../app/models/usuario';
 import { Data } from '../../app/models/data';
+import { SettingsComponent } from '../../components/settings/settings';
+
 
 @IonicPage()
 @Component({
@@ -15,10 +17,18 @@ import { Data } from '../../app/models/data';
 })
 export class TelaPrincipalPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,public service: PcaProvider,public session: Session,public storage: Storage) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    public service: PcaProvider,
+    public session: Session,
+    public storage: Storage,
+    public popoverCtrl: PopoverController
+    
+  ) {
     this.vendedor = navParams.data;
   }
-  vendedor ={};
+  vendedor:Usuario;
   ngOnInit(){
     this.session.get()
     .then(res => {
@@ -26,6 +36,12 @@ export class TelaPrincipalPage {
     });
 
     console.log(this.session.exist());
+  }
+
+  openSettings(ev){
+    let popover = this.popoverCtrl.create(SettingsComponent);
+    popover.present({ev:ev});
+
   }
   comprador={
     id:null,
@@ -103,11 +119,7 @@ export class TelaPrincipalPage {
             console.log(data)
 
           }
-
-
         })
-
-
   }
 
 

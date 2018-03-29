@@ -13,23 +13,32 @@ import { HomePage } from '../pages/home/home';
 import { PcaProvider } from '../providers/pca/pca';
 import { Session } from '../providers/session/session';
 
-import { MaskDirective } from './app.directive';
+
+import { ComponentsModule } from "../components/components.module";
+import { DirectivesModule } from "../directives/directives.module";
+import { SettingsComponent } from '../components/settings/settings';
+
+
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    MaskDirective
+    HomePage
+    
   ],
   imports: [
     BrowserModule,
+    ComponentsModule,
+    DirectivesModule,
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     HttpClientModule
+    
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    SettingsComponent
   ],
   providers: [
     StatusBar,

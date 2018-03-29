@@ -23,10 +23,12 @@ export class MaskInputDirective {
     var valor = this.model.value.replace(/\D/g, '');
     var pad = this.Mask.replace(/\D/g, '').replace(/9/g, '_');
     var valorMask = valor + pad.substring(0, pad.length - valor.length);
-    
-    if(ev.keyCode==8){
+
+    if (ev.keyCode === 8) {
+
       return;
     }
+
 
 
     var valorMaskPos = 0;

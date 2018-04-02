@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
-
+import { URLSearchParams } from '@angular/http';
 
 /*
   Generated class for the PcaProvider provider.
@@ -14,7 +14,7 @@ export class PcaProvider {
   private urlApi = 'http://127.0.0.1:3000/'
 
   constructor(public http: HttpClient) {
-    console.log('Hello PcaProvider Provider');
+
   }
 
 
@@ -63,4 +63,32 @@ export class PcaProvider {
     )
   }
 
+  updateFesta(chave:string, nome:string, lote:string, flag_alimento:string, flag_sexo:string,lotes:any[]){
+    var url = this.urlApi+chave;
+    var body = new URLSearchParams();
+    body.set('nome',nome)
+    body.set('lote',lote)
+    body.set('flag_sexo',flag_sexo)
+    body.set('flag_alimento',flag_alimento)
+    body.set('lotes',JSON.stringify(lotes))
+    return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
+  }
+
+  getListaFestas(chave:string){
+    var url = this.urlApi+chave;
+    var body = new URLSearchParams();
+    return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
+  }
+  getFesta(chave:string,id_festa:string){
+    var url = this.urlApi+chave;
+    var body = new URLSearchParams();
+    body.set('id_festa',id_festa)
+    return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
+  }
+  getComboLote(chave:string,id_festa:string){
+    var url = this.urlApi+chave;
+    var body = new URLSearchParams();
+    body.set('id_festa',id_festa)
+    return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
+  }
 }

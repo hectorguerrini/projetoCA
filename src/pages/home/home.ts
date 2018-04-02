@@ -15,27 +15,30 @@ export class HomePage {
   vendedor: Usuario;
 
   constructor(public navCtrl: NavController,public service: PcaProvider,public session: Session) {
-    if(this.session.exist()){
-      this.navCtrl.push("TelaPrincipalPage",this.vendedor)
-    }
+    this.session.get().then(res => {
+      var logado = res?true:false
+      if(logado){
+        this.navCtrl.push("TelaPrincipalPage",this.vendedor)
+      }
+    });
   }
   criaSession() {
     this.session.create(this.vendedor);
   }
-  
+
   usuario={registro:"",senha:""};
 
   retorno = "";
   ret = "";
   login(){
-    // this.service.getUsuario('lista',this.usuario.registro,this.usuario.senha)
-    // .subscribe((data:Data)=> {
-    //   if(data.message){
-    //     this.vendedor = data.jsonRetorno[0];
-    //     this.criaSession();
+    this.service.getUsuario('lista',this.usuario.registro,this.usuario.senha)
+    .subscribe((data:Data)=> {
+      if(data.message){
+        this.vendedor = data.jsonRetorno[0];
+        this.criaSession();
         this.navCtrl.push("TelaPrincipalPage",this.vendedor)
-    //   }
-    // })
+      }
+    })
 
 
     // if(this.usuario==null || this.usuario==undefined){

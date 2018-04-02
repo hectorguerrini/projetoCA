@@ -9,6 +9,7 @@ import { Data } from '../../app/models/data';
 import { SettingsComponent } from '../../components/settings/settings';
 import { AlertController } from 'ionic-angular';
 
+
 @IonicPage()
 @Component({
   selector: 'page-tela-principal',
@@ -25,24 +26,32 @@ export class TelaPrincipalPage {
     public storage: Storage,
     public popoverCtrl: PopoverController,
     public alertCtrl: AlertController
-    
+
   ) {
     this.vendedor = navParams.data;
+    this.getFesta();
+    this.getComboFesta();
   }
   vendedor:Usuario;
   ngOnInit(){
     this.session.get()
     .then(res => {
         this.vendedor = new Usuario(res);
+
     });
 
-    console.log(this.session.exist());
   }
 
   openSettings(ev){
     let popover = this.popoverCtrl.create(SettingsComponent);
     popover.present({ev:ev});
 
+  }
+  festa_config={
+    nome:"",
+    id_lote:1,
+    flag_alimento:false,
+    flag_sexo:false
   }
   comprador={
     id:null,
@@ -51,18 +60,11 @@ export class TelaPrincipalPage {
     nome:null,
     sexo:null,
     valor:null,
-    novo:null
+    novo:null,
+    alimento:null
   }
-  lotes=[
-    {label:'1º lote',valor:50},
-    {label:'2º lote',valor:60},
-    {label:'3º lote',valor:70}
-  ]
-  vendas={
-    loteAtivo:0,
-    sexo:false,
-    alimento:false
-  }
+  festa_config_lotes=[]
+
 
   baseConvidado=[
     {nome:'HECTOR GUERRINI HERRERA',registro:'446.847.728-88'}
@@ -77,24 +79,27 @@ export class TelaPrincipalPage {
       nome:null,
       sexo:null,
       valor:null,
-      novo:null
+      novo:null,
+      alimento:null
     }
     this.comprador.tipo = newObj;
-    this.verificarValor();
+    this.buscar=true;
+    //this.verificarValor();
   }
 
 
 
-  verificarValor(){
-    if(this.comprador.tipo=="0"){
-      this.comprador.valor = 'R$ '+this.lotes[this.vendas.loteAtivo].valor.toFixed(2).replace('.',',');
-    }else{
-      this.comprador.valor = 'R$ '+(this.lotes[this.vendas.loteAtivo].valor+10).toFixed(2).replace('.',',');
-    }
-  }
+  // verificarValor(){
+  //   if(this.comprador.tipo=="0"){
+  //     this.comprador.valor = 'R$ '+this.festa_config_lotes[this.festa_config.id_lote-1].value.toFixed(2).replace('.',',');
+  //   }else{
+  //     this.comprador.valor = 'R$ '+(this.festa_config_lotes[this.festa_config.id_lote-1].value+15).toFixed(2).replace('.',',');
+  //   }
+  // }
 
   getInfos(){
-    this.service.getAluno('detalhes',this.comprador.registro)
+    if(this.comprador.tipo=="0"){
+      this.service.getAluno('detalhes',this.comprador.registro)
     .subscribe((data:Data)=> {
       if(data.message){
         this.comprador.nome = data.jsonRetorno[0].nome;
@@ -102,6 +107,11 @@ export class TelaPrincipalPage {
         this.buscar=false;
       }
     })
+    }else{
+      this.buscar=false;
+      this.comprador.novo=true;
+    }
+
     // if(this.comprador.tipo=='0'){
     //   this.data = this.base.filter(b => b.registro === this.comprador.registro);
     //   this.comprador.nome = this.data.length>0?this.data[0].nome:null;
@@ -144,7 +154,7 @@ export class TelaPrincipalPage {
     this.comprador.nome = null;
     this.comprador.sexo = null;
     this.comprador.novo = null;
-    this.comprador.registro = evento == 'save'?null:this.comprador.registro;
+    this.comprador.registro = evento == 'save' ?null : this.comprador.registro;
     this.buscar = true;
 
   }
@@ -157,6 +167,26 @@ export class TelaPrincipalPage {
     }
   }
 
+  getComboFesta(){
+    this.service.getComboLote('get_lotes',"1")
+    .subscribe((data:Data) => {
+        if(data.message){
+          this.festa_config_lotes = data.jsonRetorno;
 
+        }
+    })
+
+  }
+
+  getFesta(){
+    this.service.getFesta('get_festa',"1")
+    .subscribe((data:Data) => {
+        if(data.message){
+          this.festa_config = data.jsonRetorno[0];
+
+        }
+    })
+
+  }
 
 }

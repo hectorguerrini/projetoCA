@@ -17,13 +17,13 @@ import { Session } from '../providers/session/session';
 import { ComponentsModule } from "../components/components.module";
 import { DirectivesModule } from "../directives/directives.module";
 import { SettingsComponent } from '../components/settings/settings';
-
+import { ConfigFestaComponent } from "../components/config-festa/config-festa";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage
-    
+
   ],
   imports: [
     BrowserModule,
@@ -32,13 +32,14 @@ import { SettingsComponent } from '../components/settings/settings';
     IonicModule.forRoot(MyApp),
     IonicStorageModule.forRoot(),
     HttpClientModule
-    
+
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     HomePage,
-    SettingsComponent
+    SettingsComponent,
+    ConfigFestaComponent
   ],
   providers: [
     StatusBar,

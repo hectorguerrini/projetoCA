@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { App, ViewController } from 'ionic-angular';
+import { Session } from '../../providers/session/session';
 /**
  * Generated class for the SettingsComponent component.
  *
@@ -12,15 +13,19 @@ import { App, ViewController } from 'ionic-angular';
 })
 export class SettingsComponent {
 
-  constructor( 
+  constructor(
     public viewCtrl: ViewController,
-    public appCtrl: App
+    public appCtrl: App,
+    public session: Session
   ) { }
 
   logout(){
     this.viewCtrl.dismiss();
     this.appCtrl.getRootNav().pop();
-
-  } 
-
+    this.session.remove();
+  }
+  abrirFestas(){
+    this.viewCtrl.dismiss();
+    this.appCtrl.getRootNav().push("FestasPage")
+  }
 }

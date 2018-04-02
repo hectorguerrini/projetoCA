@@ -1,0 +1,32 @@
+<!--
+  Generated template for the FestasPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Festas</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-card>
+    <ion-list>
+      <ion-item *ngFor="let festa of lista_festas">
+        <ion-label>{{festa.nome}}</ion-label>
+
+      </ion-item>
+    </ion-list>
+    <button ion-item (click)="editFesta()">
+      <ion-icon item-start name="ios-add-circle-outline"></ion-icon>
+      Criar Festa
+    </button>
+
+
+
+  </ion-card>
+</ion-content>

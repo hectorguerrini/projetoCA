@@ -18,15 +18,14 @@
       Vendas
     </ion-list-header>
     <ion-list class="select">
-
-      <ion-item>
-        <ion-label>Tipo</ion-label>
-        <ion-select [(ngModel)]="tipo" placeholder="Selecione" interface="popover">
-          <ion-option value="0">Aluno</ion-option>
-          <ion-option value="1">Convidado</ion-option>
-        </ion-select>
-      </ion-item>
-
+      
+      
+      <ion-buttons end>
+          
+          <button item-end ion-button color="dark" [outline]="comprador.tipo=='1'" (click)="comprador.tipo='0'" >Aluno</button>
+          <button item-end ion-button color="dark" [outline]="comprador.tipo=='0'" (click)="comprador.tipo='1'">Convidado</button>
+      </ion-buttons>
+      
       <ion-item *ngIf="comprador.tipo=='0'">
         <ion-label>R.A:</ion-label>
         <ion-input type="text" [(ngModel)]="comprador.registro" Mask="99.99999-9" (ngModelChange)="registroChange()"  (keyup.enter)="getInfos()"></ion-input>
@@ -50,25 +49,32 @@
       <ion-item>
         <ion-label style="text-align:center;">{{comprador.nome}}</ion-label>
       </ion-item>
-
-      <ion-item>
+      
+      <ion-buttons end>
+          <button ion-button  [outline]="comprador.sexo=='Feminino'" (click)="comprador.sexo='Masculino'" >Masculino</button>
+          <button ion-button color="danger" [outline]="comprador.sexo=='Masculino'" (click)="comprador.sexo='Feminino'">Feminino</button>
+      </ion-buttons>
+      <!-- <ion-item>
         <ion-label>Sexo</ion-label>
         <ion-select [(ngModel)]="comprador.sexo" placeholder="Selecione" interface="popover">
           <ion-option value="Feminino">Feminino</ion-option>
           <ion-option value="Masculino">Masculino</ion-option>
         </ion-select>
-      </ion-item>
+      </ion-item> -->
       <ion-item>
         <ion-label>Lote Ativo</ion-label>
-        <ion-select [(ngModel)]="festa_config.id_lote" interface="popover">
+        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover">
           <ion-option *ngFor="let lote of festa_config_lotes" [value]="lote.value">{{lote.value}}º Lote</ion-option>
         </ion-select>
       </ion-item>
       <ion-item>
         <ion-label>Valor: </ion-label>
-        <ion-label class="result">{{(festa_config_lotes[festa_config.id_lote-1].label - (comprador.alimento ? 5 : 0) ) | currency:'BRL'}}</ion-label>
+        <ion-label class="result">{{(festa_config_lotes[festa_config.lote_ativo-1].label - (comprador.alimento ? 5 : 0) ) | currency:'BRL'}}</ion-label>
       </ion-item>
-
+      <ion-item>
+        <ion-label>Alimento</ion-label>
+        <ion-toggle color="dark" *ngIf="festa_config.flag_alimento" [(ngModel)]="comprador.alimento"></ion-toggle>
+      </ion-item>
     </ion-list>
 
     <ion-list *ngIf="comprador.tipo=='1' && (comprador.nome || comprador.novo)" class="select">
@@ -89,14 +95,14 @@
 
       <ion-item>
         <ion-label>Lote Ativo</ion-label>
-        <ion-select [(ngModel)]="festa_config.id_lote" interface="popover">
+        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover">
           <ion-option *ngFor="let lote of festa_config_lotes" [value]="lote.value">{{lote.value}}º Lote</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label>Valor: </ion-label>
-        <ion-label class="result">{{(festa_config_lotes[festa_config.id_lote-1].label + 15 - (comprador.alimento ? 5 : 0) + ((festa_config.id_lote-1)*5) ) | currency:'BRL'}}</ion-label>
+        <ion-label class="result">{{(festa_config_lotes[festa_config.lote_ativo-1].label + 15 - (comprador.alimento ? 5 : 0) + ((festa_config.lote_ativo-1)*5) ) | currency:'BRL'}}</ion-label>
       </ion-item>
       <ion-item>
         <ion-label>Alimento</ion-label>

@@ -49,7 +49,7 @@ export class TelaPrincipalPage {
   }
   festa_config={
     nome:"",
-    id_lote:1,
+    lote_ativo:1,
     flag_alimento:false,
     flag_sexo:false
   }
@@ -124,12 +124,13 @@ export class TelaPrincipalPage {
     // }
   }
   updateVenda(){
+      this.comprador.valor = (this.festa_config_lotes[this.festa_config.lote_ativo-1].label - (this.comprador.alimento ? 5 : 0) )
         this.service.updateVenda(
           'update_venda',
           this.comprador.id,
           this.vendedor.id_aluno,
-          this.comprador.valor.replace('R$ ','').replace(',','.'),
-          null,
+          this.comprador.valor.toString(),
+          this.comprador.alimento?"1":"0",
           this.comprador.sexo
         )
         .subscribe((data:Data) =>{

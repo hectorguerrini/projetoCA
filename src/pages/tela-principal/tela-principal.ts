@@ -71,7 +71,7 @@ export class TelaPrincipalPage {
   ]
   data=[];
   buscar=true;
-  set tipo(newObj){
+  setTipo(newObj){
     this.comprador={
       id:null,
       tipo:null,
@@ -105,11 +105,52 @@ export class TelaPrincipalPage {
         this.comprador.nome = data.jsonRetorno[0].nome;
         this.comprador.id = data.jsonRetorno[0].id_aluno;
         this.buscar=false;
+      }else if(data.jsonRetorno.length > 0){
+
+        var alert = this.alertCtrl.create({
+          title: 'Erro ao buscar aluno',
+          subTitle: 'Venda já registrada em '+data.jsonRetorno[0].data_venda+'.',
+          buttons: ['OK']
+        });
+        alert.present();
+      }else{
+        var alertError = this.alertCtrl.create({
+          title: 'Erro',
+          subTitle: 'Aluno não encontrado',
+          buttons: ['OK']
+        });
+        alertError.present();
       }
     })
-    }else{
-      this.buscar=false;
-      this.comprador.novo=true;
+    }else if(this.comprador.tipo=="1"){
+      if(this.TestaCPF(this.comprador.registro)){
+        this.service.getConvidado('detalhes_convidado',this.comprador.registro)
+        .subscribe((data:Data) => {
+          if(data.message){
+            var alertError = this.alertCtrl.create({
+              title: 'Erro no CPF',
+              subTitle: 'CPF já utilizado em '+data.jsonRetorno[0].data_venda+'.',
+              buttons: ['OK']
+            });
+            alertError.present();
+
+          }else{
+            this.buscar=false;
+            this.comprador.novo=true;
+          }
+
+        })
+
+
+      }else{
+        var alertError = this.alertCtrl.create({
+          title: 'Erro de CPF',
+          subTitle: 'CPF Inválido',
+          buttons: ['OK']
+        });
+        alertError.present();
+      }
+
     }
 
     // if(this.comprador.tipo=='0'){
@@ -124,7 +165,8 @@ export class TelaPrincipalPage {
     // }
   }
   updateVenda(){
-      this.comprador.valor = (this.festa_config_lotes[this.festa_config.lote_ativo-1].label - (this.comprador.alimento ? 5 : 0) )
+      if(this.comprador.tipo=='0'){
+        this.comprador.valor = (this.festa_config_lotes[this.festa_config.lote_ativo-1].label - (this.comprador.alimento ? 5 : 0) )
         this.service.updateVenda(
           'update_venda',
           this.comprador.id,
@@ -148,6 +190,37 @@ export class TelaPrincipalPage {
 
           }
         })
+      }else if(this.comprador.tipo=='1'){
+        this.comprador.valor =(this.festa_config_lotes[this.festa_config.lote_ativo-1].label + 15 - (this.comprador.alimento ? 5 : 0) + ((this.festa_config.lote_ativo-1)*5) )
+        this.service.updateVendaConvidado(
+          'update_venda_convidado',
+          this.comprador.registro,
+          this.vendedor.id_aluno,
+          this.comprador.valor.toString(),
+          this.comprador.alimento?"1":"0",
+          this.comprador.sexo,
+          this.comprador.nome
+        )
+        .subscribe((data:Data) =>{
+          if(data.message){
+            this.zerarForm('save');
+
+          }else{
+
+            var alert = this.alertCtrl.create({
+              title: 'Erro ao finalizar venda',
+              subTitle: 'Venda já registrada em '+data.jsonRetorno[0].data_venda+' .',
+              buttons: ['OK']
+            });
+            alert.present();
+
+          }
+        })
+
+
+
+      }
+
   }
 
   zerarForm(evento){
@@ -189,5 +262,28 @@ export class TelaPrincipalPage {
     })
 
   }
+
+  TestaCPF(strCPF) {
+    var Soma;
+    var Resto;
+    Soma = 0;
+    strCPF = strCPF.replace(/[^\d]+/g,'');
+    if (strCPF == "00000000000") return false;
+
+    for (var i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto == 10) || (Resto == 11))  Resto = 0;
+    if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+
+    Soma = 0;
+    for (var j = 1; j <= 10; j++) Soma = Soma + parseInt(strCPF.substring(j-1, j)) * (12 - j);
+    Resto = (Soma * 10) % 11;
+
+    if ((Resto == 10) || (Resto == 11))  Resto = 0;
+    if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+    return true;
+}
+
 
 }

@@ -11,7 +11,7 @@ import { URLSearchParams } from '@angular/http';
 */
 @Injectable()
 export class PcaProvider {
-  private urlApi = 'http://127.0.0.1:3000/'
+  private urlApi = 'http://192.168.0.44:3000/'
 
   constructor(public http: HttpClient) {
 
@@ -46,6 +46,19 @@ export class PcaProvider {
       }
     )
   }
+  getConvidado(chave:string, cpf:string){
+    var url = this.urlApi+chave;
+    var body = new URLSearchParams();
+    body.set('cpf',cpf)
+
+   return this.http.post(
+      url,
+      body.toString(),
+      {
+        headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    )
+  }
   updateVenda(chave:string, id_aluno:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
@@ -54,6 +67,23 @@ export class PcaProvider {
     body.set('valor',valor)
     body.set('flag_alimento',flag_alimento)
     body.set('sexo',sexo)
+   return this.http.post(
+      url,
+      body.toString(),
+      {
+        headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
+      }
+    )
+  }
+  updateVendaConvidado(chave:string, cpf:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string,nome:string){
+    var url = this.urlApi+chave;
+    var body = new URLSearchParams();
+    body.set('cpf',cpf)
+    body.set('id_vendedor',id_vendedor)
+    body.set('valor',valor)
+    body.set('flag_alimento',flag_alimento)
+    body.set('sexo',sexo)
+    body.set('nome',nome)
    return this.http.post(
       url,
       body.toString(),

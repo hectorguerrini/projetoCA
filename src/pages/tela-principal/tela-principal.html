@@ -18,14 +18,16 @@
       Vendas
     </ion-list-header>
     <ion-list class="select">
-      
-      
+
+      <ion-item class="label-button">
+        <ion-label>Tipo</ion-label>
+      </ion-item>
       <ion-buttons end>
-          
-          <button item-end ion-button color="dark" [outline]="comprador.tipo=='1'" (click)="comprador.tipo='0'" >Aluno</button>
-          <button item-end ion-button color="dark" [outline]="comprador.tipo=='0'" (click)="comprador.tipo='1'">Convidado</button>
+
+          <button item-end ion-button color="dark" [outline]="comprador.tipo=='1'" (click)="setTipo('0')" >Aluno</button>
+          <button item-end ion-button color="dark" [outline]="comprador.tipo=='0'" (click)="setTipo('1')">Convidado</button>
       </ion-buttons>
-      
+
       <ion-item *ngIf="comprador.tipo=='0'">
         <ion-label>R.A:</ion-label>
         <ion-input type="text" [(ngModel)]="comprador.registro" Mask="99.99999-9" (ngModelChange)="registroChange()"  (keyup.enter)="getInfos()"></ion-input>
@@ -49,7 +51,9 @@
       <ion-item>
         <ion-label style="text-align:center;">{{comprador.nome}}</ion-label>
       </ion-item>
-      
+      <ion-item class="label-button">
+        <ion-label>Sexo</ion-label>
+      </ion-item>
       <ion-buttons end>
           <button ion-button  [outline]="comprador.sexo=='Feminino'" (click)="comprador.sexo='Masculino'" >Masculino</button>
           <button ion-button color="danger" [outline]="comprador.sexo=='Masculino'" (click)="comprador.sexo='Feminino'">Feminino</button>
@@ -85,13 +89,13 @@
         <ion-input *ngIf="comprador.novo" type="text" [(ngModel)]="comprador.nome"></ion-input>
       </ion-item>
 
-      <ion-item>
+      <ion-item class="label-button">
         <ion-label>Sexo</ion-label>
-        <ion-select [(ngModel)]="comprador.sexo" placeholder="Selecione" interface="popover">
-          <ion-option value="Feminino">Feminino</ion-option>
-          <ion-option value="Masculino">Masculino</ion-option>
-        </ion-select>
       </ion-item>
+      <ion-buttons end>
+          <button ion-button  [outline]="comprador.sexo=='Feminino'" (click)="comprador.sexo='Masculino'" >Masculino</button>
+          <button ion-button color="danger" [outline]="comprador.sexo=='Masculino'" (click)="comprador.sexo='Feminino'">Feminino</button>
+      </ion-buttons>
 
       <ion-item>
         <ion-label>Lote Ativo</ion-label>

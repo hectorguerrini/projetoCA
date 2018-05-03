@@ -11,7 +11,7 @@ import { URLSearchParams } from '@angular/http';
 */
 @Injectable()
 export class PcaProvider {
-  private urlApi = 'http://192.168.0.44:3000/'
+  private urlApi = 'http://localhost:5000/'
 
   constructor(public http: HttpClient) {
 
@@ -33,11 +33,11 @@ export class PcaProvider {
     )
   }
 
-  getAluno(chave:string, registro:string){
+  getAluno(chave:string, registro:string,id_festa:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
-    body.set('registro',registro)
-
+    body.set('registro',registro);
+    body.set('id_festa',id_festa);
    return this.http.post(
       url,
       body.toString(),
@@ -59,7 +59,7 @@ export class PcaProvider {
       }
     )
   }
-  updateVenda(chave:string, id_aluno:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string){
+  updateVenda(chave:string, id_aluno:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string,lote:string,id_festa:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('id_aluno',id_aluno)
@@ -67,7 +67,9 @@ export class PcaProvider {
     body.set('valor',valor)
     body.set('flag_alimento',flag_alimento)
     body.set('sexo',sexo)
-   return this.http.post(
+    body.set('lote',lote)
+    body.set('id_festa',id_festa)
+    return this.http.post(
       url,
       body.toString(),
       {
@@ -75,7 +77,7 @@ export class PcaProvider {
       }
     )
   }
-  updateVendaConvidado(chave:string, cpf:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string,nome:string){
+  updateVendaConvidado(chave:string, cpf:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string,nome:string,lote:string,id_festa:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('cpf',cpf)
@@ -84,6 +86,8 @@ export class PcaProvider {
     body.set('flag_alimento',flag_alimento)
     body.set('sexo',sexo)
     body.set('nome',nome)
+    body.set('lote',lote)
+    body.set('id_festa',id_festa)
    return this.http.post(
       url,
       body.toString(),
@@ -109,10 +113,10 @@ export class PcaProvider {
     var body = new URLSearchParams();
     return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
   }
-  getFesta(chave:string,id_festa:string){
+  getFesta(chave:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
-    body.set('id_festa',id_festa)
+    //body.set('id_festa',id_festa)
     return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
   }
   getComboLote(chave:string,id_festa:string){

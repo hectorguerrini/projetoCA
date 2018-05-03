@@ -30,7 +30,7 @@ export class TelaPrincipalPage {
   ) {
     this.vendedor = navParams.data;
     this.getFesta();
-    this.getComboFesta();
+
   }
   vendedor:Usuario;
   ngOnInit(){
@@ -51,7 +51,8 @@ export class TelaPrincipalPage {
     nome:"",
     lote_ativo:1,
     flag_alimento:false,
-    flag_sexo:false
+    flag_sexo:false,
+    id_festa:null
   }
   comprador={
     id:null,
@@ -99,7 +100,7 @@ export class TelaPrincipalPage {
 
   getInfos(){
     if(this.comprador.tipo=="0"){
-      this.service.getAluno('detalhes',this.comprador.registro)
+      this.service.getAluno('detalhes',this.comprador.registro,this.festa_config.id_festa)
     .subscribe((data:Data)=> {
       if(data.message){
         this.comprador.nome = data.jsonRetorno[0].nome;
@@ -173,7 +174,9 @@ export class TelaPrincipalPage {
           this.vendedor.id_aluno,
           this.comprador.valor.toString(),
           this.comprador.alimento?"1":"0",
-          this.comprador.sexo
+          this.comprador.sexo,
+          this.festa_config.lote_ativo.toString(),
+          this.festa_config.id_festa
         )
         .subscribe((data:Data) =>{
           if(data.message){
@@ -199,7 +202,9 @@ export class TelaPrincipalPage {
           this.comprador.valor.toString(),
           this.comprador.alimento?"1":"0",
           this.comprador.sexo,
-          this.comprador.nome
+          this.comprador.nome,
+          this.festa_config.lote_ativo.toString(),
+          this.festa_config.id_festa
         )
         .subscribe((data:Data) =>{
           if(data.message){
@@ -242,7 +247,7 @@ export class TelaPrincipalPage {
   }
 
   getComboFesta(){
-    this.service.getComboLote('get_lotes',"1")
+    this.service.getComboLote('get_lotes',this.festa_config.id_festa)
     .subscribe((data:Data) => {
         if(data.message){
           this.festa_config_lotes = data.jsonRetorno;
@@ -253,11 +258,11 @@ export class TelaPrincipalPage {
   }
 
   getFesta(){
-    this.service.getFesta('get_festa',"1")
+    this.service.getFesta('get_festa')
     .subscribe((data:Data) => {
         if(data.message){
           this.festa_config = data.jsonRetorno[0];
-
+          this.getComboFesta();
         }
     })
 

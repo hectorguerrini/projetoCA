@@ -4,6 +4,9 @@ import { ModalController } from 'ionic-angular';
 import { ConfigFestaComponent } from "../../components/config-festa/config-festa";
 import { PcaProvider } from "../../providers/pca/pca";
 import { Data } from "../../app/models/data";
+
+
+
 /**
  * Generated class for the FestasPage page.
  *
@@ -20,6 +23,7 @@ export class FestasPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,public modalCtrl: ModalController,public service: PcaProvider) {
     this.getListaFestas();
+
   }
 
   flag_nova_festa=false;

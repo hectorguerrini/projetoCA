@@ -21,38 +21,90 @@
       <ion-label>Nome:</ion-label>
       <ion-input type="text" [(ngModel)]="festa_config.nome"></ion-input>
     </ion-item>
-    <ion-item>
+    <!-- <ion-item>
       <ion-label>Lote Ativo:</ion-label>
       <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover">
-        <ion-option *ngFor="let lote of festa_config.lotes" [value]="lote.value">{{lote.value}}º Lote</ion-option>
+        <ion-option *ngFor="let lote of lotesNormal" [value]="lote.value">{{lote.value}}º Lote</ion-option>
       </ion-select>
-    </ion-item>
+    </ion-item> -->
     <ion-list-header>
-      PREÇOS
+      PREÇOS ALUNO
     </ion-list-header>
-    <ion-item>
+    <ion-item col-sm-4 class="preco" >
       <ion-label>1º Lote:</ion-label>
-      <ion-input type="text" [(ngModel)]="festa_config.lotes[0].label" mask-money></ion-input>
+      <ion-input type="text" [(ngModel)]="lotesNormal[0].label" mask-money></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item col-sm-4 class="preco">
       <ion-label>2º Lote:</ion-label>
-      <ion-input type="text" [(ngModel)]="festa_config.lotes[1].label" mask-money></ion-input>
+      <ion-input type="text" [(ngModel)]="lotesNormal[1].label" mask-money></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item col-sm-4 class="preco">
       <ion-label>3º Lote:</ion-label>
-      <ion-input type="text" [(ngModel)]="festa_config.lotes[2].label" mask-money></ion-input>
+      <ion-input type="text" [(ngModel)]="lotesNormal[2].label" mask-money></ion-input>
     </ion-item>
     <ion-list-header>
-      DESCONTOS
+      PREÇOS CONVIDADO
+    </ion-list-header>
+    <ion-item col-sm-4 class="preco" >
+      <ion-label>1º Lote:</ion-label>
+      <ion-input type="text" [(ngModel)]="lotesNormal[3].label" mask-money></ion-input>
+    </ion-item>
+    <ion-item col-sm-4 class="preco">
+      <ion-label>2º Lote:</ion-label>
+      <ion-input type="text" [(ngModel)]="lotesNormal[4].label" mask-money></ion-input>
+    </ion-item>
+    <ion-item col-sm-4 class="preco">
+      <ion-label>3º Lote:</ion-label>
+      <ion-input type="text" [(ngModel)]="lotesNormal[5].label" mask-money></ion-input>
+    </ion-item>
+    <div *ngIf="festa_config.flag_camarote">
+      <ion-list-header>
+        PREÇOS CAMAROTE ALUNO
+      </ion-list-header>
+      <ion-item col-sm-4 class="preco" >
+        <ion-label>1º Lote:</ion-label>
+        <ion-input type="text" [(ngModel)]="lotesEspecial[0].label" mask-money></ion-input>
+      </ion-item>
+      <ion-item col-sm-4 class="preco">
+        <ion-label>2º Lote:</ion-label>
+        <ion-input type="text" [(ngModel)]="lotesEspecial[1].label" mask-money></ion-input>
+      </ion-item>
+      <ion-item col-sm-4 class="preco">
+        <ion-label>3º Lote:</ion-label>
+        <ion-input type="text" [(ngModel)]="lotesEspecial[2].label" mask-money></ion-input>
+      </ion-item>
+      <ion-list-header>
+        PREÇOS CAMAROTE CONVIDADO
+      </ion-list-header>
+      <ion-item col-sm-4 class="preco" >
+        <ion-label>1º Lote:</ion-label>
+        <ion-input type="text" [(ngModel)]="lotesEspecial[3].label" mask-money></ion-input>
+      </ion-item>
+      <ion-item col-sm-4 class="preco">
+        <ion-label>2º Lote:</ion-label>
+        <ion-input type="text" [(ngModel)]="lotesEspecial[4].label" mask-money></ion-input>
+      </ion-item>
+      <ion-item col-sm-4 class="preco">
+        <ion-label>3º Lote:</ion-label>
+        <ion-input type="text" [(ngModel)]="lotesEspecial[5].label" mask-money></ion-input>
+      </ion-item>
+    </div>
+
+    <ion-list-header>
+      EXTRAS
     </ion-list-header>
     <ion-item>
-      <ion-label>Alimento</ion-label>
+      <ion-label>Desconto Alimento</ion-label>
       <ion-checkbox color="dark" [(ngModel)]="festa_config.flag_alimento"></ion-checkbox>
     </ion-item>
     <ion-item>
+      <ion-label>Camarote</ion-label>
+      <ion-checkbox color="dark" [(ngModel)]="festa_config.flag_camarote"></ion-checkbox>
+    </ion-item>
+    <!-- <ion-item>
       <ion-label>Diferença Masc/Fem</ion-label>
       <ion-checkbox color="dark" [(ngModel)]="festa_config.flag_sexo"></ion-checkbox>
-    </ion-item>
+    </ion-item> -->
     <button ion-button color="secondary" block (click)="salvarFesta()">
       <ion-icon name="checkmark" item-start></ion-icon>
       Salvar

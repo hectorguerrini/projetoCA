@@ -57,6 +57,7 @@ export class TelaPrincipalPage {
   comprador={
     id:null,
     tipo:null,
+    ingresso:null,
     registro:null,
     nome:null,
     sexo:null,
@@ -64,7 +65,10 @@ export class TelaPrincipalPage {
     novo:null,
     alimento:null
   }
-  festa_config_lotes=[]
+  lotes_pista_aluno=[]
+  lotes_pista_naluno=[]
+  lotes_camarote_aluno=[]
+  lotes_camarote_naluno=[]
 
 
   baseConvidado=[
@@ -76,6 +80,7 @@ export class TelaPrincipalPage {
     this.comprador={
       id:null,
       tipo:null,
+      ingresso:null,
       registro:null,
       nome:null,
       sexo:null,
@@ -167,7 +172,7 @@ export class TelaPrincipalPage {
   }
   updateVenda(){
       if(this.comprador.tipo=='0'){
-        this.comprador.valor = (this.festa_config_lotes[this.festa_config.lote_ativo-1].label - (this.comprador.alimento ? 5 : 0) )
+        this.comprador.valor = ((this.comprador.ingresso=='Pista'?(this.lotes_pista_aluno[this.festa_config.lote_ativo-1].label):(this.lotes_camarote_aluno[this.festa_config.lote_ativo-1].label)) - (this.comprador.alimento ? 5 : 0) )
         this.service.updateVenda(
           'update_venda',
           this.comprador.id,
@@ -194,7 +199,7 @@ export class TelaPrincipalPage {
           }
         })
       }else if(this.comprador.tipo=='1'){
-        this.comprador.valor =(this.festa_config_lotes[this.festa_config.lote_ativo-1].label + 15 - (this.comprador.alimento ? 5 : 0) + ((this.festa_config.lote_ativo-1)*5) )
+        this.comprador.valor = ((this.comprador.ingresso=='Pista'?(this.lotes_pista_naluno[this.festa_config.lote_ativo-1].label):(this.lotes_camarote_naluno[this.festa_config.lote_ativo-1].label)) - (this.comprador.alimento ? 5 : 0) )
         this.service.updateVendaConvidado(
           'update_venda_convidado',
           this.comprador.registro,
@@ -250,7 +255,10 @@ export class TelaPrincipalPage {
     this.service.getComboLote('get_lotes',this.festa_config.id_festa)
     .subscribe((data:Data) => {
         if(data.message){
-          this.festa_config_lotes = data.jsonRetorno;
+          this.lotes_pista_aluno = data.jsonRetorno.filter(function(d){return d.tipo == 'pista' && d.aluno == 'aluno'});
+          this.lotes_pista_naluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'pista' && d.aluno == 'naluno'});
+          this.lotes_camarote_aluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'camarote' && d.aluno == 'aluno'});
+          this.lotes_camarote_naluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'camarote' && d.aluno == 'naluno'});
 
         }
     })

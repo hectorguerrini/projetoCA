@@ -128,7 +128,7 @@
         <ion-toggle color="dark"[(ngModel)]="comprador.alimento"></ion-toggle>
       </ion-item>
     </ion-list>
-    <ion-list *ngIf="comprador.nome">
+    <ion-list *ngIf="comprador.ingresso">
       <button ion-item (click)="updateVenda()" >
           <ion-icon name="checkmark" item-start></ion-icon>
         Finalizar venda

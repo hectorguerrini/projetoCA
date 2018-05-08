@@ -30,7 +30,7 @@ export class TelaPrincipalPage {
   ) {
     this.vendedor = navParams.data;
     this.getFesta();
-    this.getComboFesta();
+
   }
   vendedor:Usuario;
   ngOnInit(){
@@ -51,11 +51,13 @@ export class TelaPrincipalPage {
     nome:"",
     lote_ativo:1,
     flag_alimento:false,
-    flag_sexo:false
+    flag_sexo:false,
+    id_festa:null
   }
   comprador={
     id:null,
     tipo:null,
+    ingresso:null,
     registro:null,
     nome:null,
     sexo:null,
@@ -63,7 +65,10 @@ export class TelaPrincipalPage {
     novo:null,
     alimento:null
   }
-  festa_config_lotes=[]
+  lotes_pista_aluno=[]
+  lotes_pista_naluno=[]
+  lotes_camarote_aluno=[]
+  lotes_camarote_naluno=[]
 
 
   baseConvidado=[
@@ -75,6 +80,7 @@ export class TelaPrincipalPage {
     this.comprador={
       id:null,
       tipo:null,
+      ingresso:null,
       registro:null,
       nome:null,
       sexo:null,
@@ -99,7 +105,7 @@ export class TelaPrincipalPage {
 
   getInfos(){
     if(this.comprador.tipo=="0"){
-      this.service.getAluno('detalhes',this.comprador.registro)
+      this.service.getAluno('detalhes',this.comprador.registro,this.festa_config.id_festa)
     .subscribe((data:Data)=> {
       if(data.message){
         this.comprador.nome = data.jsonRetorno[0].nome;
@@ -166,14 +172,16 @@ export class TelaPrincipalPage {
   }
   updateVenda(){
       if(this.comprador.tipo=='0'){
-        this.comprador.valor = (this.festa_config_lotes[this.festa_config.lote_ativo-1].label - (this.comprador.alimento ? 5 : 0) )
+        this.comprador.valor = ((this.comprador.ingresso=='Pista'?(this.lotes_pista_aluno[this.festa_config.lote_ativo-1].label):(this.lotes_camarote_aluno[this.festa_config.lote_ativo-1].label)) - (this.comprador.alimento ? 5 : 0) )
         this.service.updateVenda(
           'update_venda',
           this.comprador.id,
           this.vendedor.id_aluno,
           this.comprador.valor.toString(),
           this.comprador.alimento?"1":"0",
-          this.comprador.sexo
+          this.comprador.sexo,
+          this.festa_config.lote_ativo.toString(),
+          this.festa_config.id_festa
         )
         .subscribe((data:Data) =>{
           if(data.message){
@@ -191,7 +199,7 @@ export class TelaPrincipalPage {
           }
         })
       }else if(this.comprador.tipo=='1'){
-        this.comprador.valor =(this.festa_config_lotes[this.festa_config.lote_ativo-1].label + 15 - (this.comprador.alimento ? 5 : 0) + ((this.festa_config.lote_ativo-1)*5) )
+        this.comprador.valor = ((this.comprador.ingresso=='Pista'?(this.lotes_pista_naluno[this.festa_config.lote_ativo-1].label):(this.lotes_camarote_naluno[this.festa_config.lote_ativo-1].label)) - (this.comprador.alimento ? 5 : 0) )
         this.service.updateVendaConvidado(
           'update_venda_convidado',
           this.comprador.registro,
@@ -199,7 +207,9 @@ export class TelaPrincipalPage {
           this.comprador.valor.toString(),
           this.comprador.alimento?"1":"0",
           this.comprador.sexo,
-          this.comprador.nome
+          this.comprador.nome,
+          this.festa_config.lote_ativo.toString(),
+          this.festa_config.id_festa
         )
         .subscribe((data:Data) =>{
           if(data.message){
@@ -242,10 +252,13 @@ export class TelaPrincipalPage {
   }
 
   getComboFesta(){
-    this.service.getComboLote('get_lotes',"1")
+    this.service.getComboLote('get_lotes',this.festa_config.id_festa)
     .subscribe((data:Data) => {
         if(data.message){
-          this.festa_config_lotes = data.jsonRetorno;
+          this.lotes_pista_aluno = data.jsonRetorno.filter(function(d){return d.tipo == 'pista' && d.aluno == 'aluno'});
+          this.lotes_pista_naluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'pista' && d.aluno == 'naluno'});
+          this.lotes_camarote_aluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'camarote' && d.aluno == 'aluno'});
+          this.lotes_camarote_naluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'camarote' && d.aluno == 'naluno'});
 
         }
     })
@@ -253,11 +266,11 @@ export class TelaPrincipalPage {
   }
 
   getFesta(){
-    this.service.getFesta('get_festa',"1")
+    this.service.getFesta('get_festa')
     .subscribe((data:Data) => {
         if(data.message){
           this.festa_config = data.jsonRetorno[0];
-
+          this.getComboFesta();
         }
     })
 

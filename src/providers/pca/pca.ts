@@ -11,7 +11,8 @@ import { AlertController } from 'ionic-angular';
 */
 @Injectable()
 export class PcaProvider {
-  private urlApi = 'http://localhost:3000/'
+
+  private urlApi = 'http://192.168.0.44:5000/'
 
   constructor(public http: HttpClient,public alertCtrl: AlertController) {
 
@@ -38,11 +39,11 @@ export class PcaProvider {
     )
   }
 
-  getAluno(chave:string, registro:string){
+  getAluno(chave:string, registro:string,id_festa:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
-    body.set('registro',registro)
-
+    body.set('registro',registro);
+    body.set('id_festa',id_festa);
    return this.http.post(
       url,
       body.toString(),
@@ -64,7 +65,7 @@ export class PcaProvider {
       }
     )
   }
-  updateVenda(chave:string, id_aluno:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string){
+  updateVenda(chave:string, id_aluno:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string,lote:string,id_festa:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('id_aluno',id_aluno)
@@ -72,7 +73,9 @@ export class PcaProvider {
     body.set('valor',valor)
     body.set('flag_alimento',flag_alimento)
     body.set('sexo',sexo)
-   return this.http.post(
+    body.set('lote',lote)
+    body.set('id_festa',id_festa)
+    return this.http.post(
       url,
       body.toString(),
       {
@@ -80,7 +83,7 @@ export class PcaProvider {
       }
     )
   }
-  updateVendaConvidado(chave:string, cpf:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string,nome:string){
+  updateVendaConvidado(chave:string, cpf:string,id_vendedor:string,valor:string,flag_alimento:string,sexo:string,nome:string,lote:string,id_festa:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('cpf',cpf)
@@ -89,6 +92,8 @@ export class PcaProvider {
     body.set('flag_alimento',flag_alimento)
     body.set('sexo',sexo)
     body.set('nome',nome)
+    body.set('lote',lote)
+    body.set('id_festa',id_festa)
    return this.http.post(
       url,
       body.toString(),
@@ -98,14 +103,16 @@ export class PcaProvider {
     )
   }
 
-  updateFesta(chave:string, nome:string, lote:string, flag_alimento:string, flag_sexo:string,lotes:any[]){
+  updateFesta(chave:string, nome:string, lote:string, flag_alimento:string, flag_sexo:string,lotesNormal:any[],lotesEspecial:any[],flag_camarote:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('nome',nome)
     body.set('lote',lote)
     body.set('flag_sexo',flag_sexo)
     body.set('flag_alimento',flag_alimento)
-    body.set('lotes',JSON.stringify(lotes))
+    body.set('flag_camarote',flag_camarote)
+    body.set('lotesNormal',JSON.stringify(lotesNormal))
+    body.set('lotesEspecial',JSON.stringify(lotesEspecial))
     return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
   }
 
@@ -114,10 +121,10 @@ export class PcaProvider {
     var body = new URLSearchParams();
     return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
   }
-  getFesta(chave:string,id_festa:string){
+  getFesta(chave:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
-    body.set('id_festa',id_festa)
+    //body.set('id_festa',id_festa)
     return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
   }
   getComboLote(chave:string,id_festa:string){

@@ -16,15 +16,27 @@ export class ConfigFestaComponent {
   festa_config={
     nome:null,
     lote_ativo:1,
-    lotes:[
-      {value:1,label:''},
-      {value:2,label:''},
-      {value:3,label:''},
-    ],
     flag_alimento:false,
-    flag_sexo:false
+    flag_sexo:false,
+    flag_camarote:false
   }
-  constructor(public viewCtrl: ViewController,public service: PcaProvider,) {
+  lotesNormal=[
+    {value:1,label:'',tipo:'aluno'},
+    {value:2,label:'',tipo:'aluno'},
+    {value:3,label:'',tipo:'aluno'},
+    {value:1,label:'',tipo:'naluno'},
+    {value:2,label:'',tipo:'naluno'},
+    {value:3,label:'',tipo:'naluno'}
+  ]
+  lotesEspecial=[
+    {value:1,label:'',tipo:'aluno'},
+    {value:2,label:'',tipo:'aluno'},
+    {value:3,label:'',tipo:'aluno'},
+    {value:1,label:'',tipo:'naluno'},
+    {value:2,label:'',tipo:'naluno'},
+    {value:3,label:'',tipo:'naluno'}
+  ]
+  constructor(public viewCtrl: ViewController,public service: PcaProvider) {
 
   }
   dismiss() {
@@ -37,7 +49,9 @@ export class ConfigFestaComponent {
       this.festa_config.lote_ativo.toString(),
       this.festa_config.flag_alimento?"1":"0",
       this.festa_config.flag_sexo?"1":"0",
-      this.festa_config.lotes
+      this.lotesNormal,
+      this.festa_config.flag_camarote?this.lotesEspecial:null,
+      this.festa_config.flag_camarote?"1":"0"
     ).subscribe((data:Data)=> {
       if(data.message){
 

@@ -1,7 +1,8 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{vendedor.nome}}</ion-title>
+    <ion-title>{{festa_config.nome}}</ion-title>
+
     <ion-buttons end>
       <button ion-button icon-only (click)="openSettings($event)">
         <ion-icon name="settings"></ion-icon>
@@ -65,19 +66,27 @@
           <ion-option value="Masculino">Masculino</ion-option>
         </ion-select>
       </ion-item> -->
-      <ion-item>
+
+      <ion-buttons end>
+        <button ion-button  [outline]="comprador.ingresso=='Camarote'" (click)="comprador.ingresso='Pista'" >Pista</button>
+        <button ion-button color="danger" [outline]="comprador.ingresso=='Pista'" (click)="comprador.ingresso='Camarote'">Camarote</button>
+      </ion-buttons>
+      <ion-item *ngIf="comprador.ingresso">
         <ion-label>Lote Ativo</ion-label>
-        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover">
-          <ion-option *ngFor="let lote of festa_config_lotes" [value]="lote.value">{{lote.value}}º Lote</ion-option>
+        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover" *ngIf="comprador.ingresso=='Pista'">
+          <ion-option *ngFor="let lote of lotes_pista_aluno" [value]="lote.value">{{lote.value}}º Lote </ion-option>
+        </ion-select>
+        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover" *ngIf="comprador.ingresso=='Camarote'">
+          <ion-option *ngFor="let lote of lotes_camarote_aluno" [value]="lote.value">{{lote.value}}º Lote </ion-option>
         </ion-select>
       </ion-item>
-      <ion-item>
+      <ion-item *ngIf="comprador.ingresso">
         <ion-label>Valor: </ion-label>
-        <ion-label class="result">{{(festa_config_lotes[festa_config.lote_ativo-1].label - (comprador.alimento ? 5 : 0) ) | currency:'BRL'}}</ion-label>
+        <ion-label class="result">{{ ((comprador.ingresso=='Pista'?(lotes_pista_aluno[festa_config.lote_ativo-1].label):(lotes_camarote_aluno[festa_config.lote_ativo-1].label)) - (comprador.alimento ? 5 : 0) ) | currency:'BRL'}}</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item  *ngIf="festa_config.flag_alimento" >
         <ion-label>Alimento</ion-label>
-        <ion-toggle color="dark" *ngIf="festa_config.flag_alimento" [(ngModel)]="comprador.alimento"></ion-toggle>
+        <ion-toggle color="dark"  [(ngModel)]="comprador.alimento"></ion-toggle>
       </ion-item>
     </ion-list>
 
@@ -97,20 +106,26 @@
           <button ion-button color="danger" [outline]="comprador.sexo=='Masculino'" (click)="comprador.sexo='Feminino'">Feminino</button>
       </ion-buttons>
 
-      <ion-item>
+      <ion-buttons end>
+        <button ion-button  [outline]="comprador.ingresso=='Camarote'" (click)="comprador.ingresso='Pista'" >Pista</button>
+        <button ion-button color="danger" [outline]="comprador.ingresso=='Pista'" (click)="comprador.ingresso='Camarote'">Camarote</button>
+      </ion-buttons>
+      <ion-item *ngIf="comprador.ingresso">
         <ion-label>Lote Ativo</ion-label>
-        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover">
-          <ion-option *ngFor="let lote of festa_config_lotes" [value]="lote.value">{{lote.value}}º Lote</ion-option>
+        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover" *ngIf="comprador.ingresso=='Pista'">
+          <ion-option *ngFor="let lote of lotes_pista_naluno" [value]="lote.value">{{lote.value}}º Lote </ion-option>
+        </ion-select>
+        <ion-select [(ngModel)]="festa_config.lote_ativo" interface="popover" *ngIf="comprador.ingresso=='Camarote'">
+          <ion-option *ngFor="let lote of lotes_camarote_naluno" [value]="lote.value">{{lote.value}}º Lote </ion-option>
         </ion-select>
       </ion-item>
-
-      <ion-item>
+      <ion-item *ngIf="comprador.ingresso">
         <ion-label>Valor: </ion-label>
-        <ion-label class="result">{{(festa_config_lotes[festa_config.lote_ativo-1].label + 15 - (comprador.alimento ? 5 : 0) + ((festa_config.lote_ativo-1)*5) ) | currency:'BRL'}}</ion-label>
+        <ion-label class="result">{{ ((comprador.ingresso=='Pista'?(lotes_pista_naluno[festa_config.lote_ativo-1].label):(lotes_camarote_naluno[festa_config.lote_ativo-1].label)) - (comprador.alimento ? 5 : 0) ) | currency:'BRL'}}</ion-label>
       </ion-item>
-      <ion-item>
+      <ion-item  *ngIf="festa_config.flag_alimento" >
         <ion-label>Alimento</ion-label>
-        <ion-toggle color="dark" *ngIf="festa_config.flag_alimento" [(ngModel)]="comprador.alimento"></ion-toggle>
+        <ion-toggle color="dark"[(ngModel)]="comprador.alimento"></ion-toggle>
       </ion-item>
     </ion-list>
     <ion-list *ngIf="comprador.nome">

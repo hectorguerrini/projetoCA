@@ -15,7 +15,6 @@ import { Data } from '../../app/models/data';
 export class ConfigFestaComponent {
   festa_config={
     nome:null,
-    lote_ativo:1,
     flag_alimento:false,
     flag_sexo:false,
     flag_camarote:false
@@ -46,7 +45,6 @@ export class ConfigFestaComponent {
     this.service.updateFesta(
       'update_festa',
       this.festa_config.nome,
-      this.festa_config.lote_ativo.toString(),
       this.festa_config.flag_alimento?"1":"0",
       this.festa_config.flag_sexo?"1":"0",
       this.lotesNormal,

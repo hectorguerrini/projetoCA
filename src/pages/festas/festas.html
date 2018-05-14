@@ -18,7 +18,7 @@
     <ion-list>
       <ion-item *ngFor="let festa of lista_festas" >
         <ion-label>{{festa.nome}}</ion-label>
-
+        <ion-icon name="cart" item-start (click)="geraExcel(festa)" style="cursor: pointer;"></ion-icon>
       </ion-item>
     </ion-list>
     <button ion-item (click)="editFesta()">

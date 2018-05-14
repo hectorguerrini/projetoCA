@@ -11,7 +11,7 @@ import { URLSearchParams } from '@angular/http';
 */
 @Injectable()
 export class PcaProvider {
-  private urlApi = 'http://192.168.0.44:5000/'
+  private urlApi = 'http://localhost/projetoCaApi/'
 
   constructor(public http: HttpClient) {
 
@@ -97,11 +97,10 @@ export class PcaProvider {
     )
   }
 
-  updateFesta(chave:string, nome:string, lote:string, flag_alimento:string, flag_sexo:string,lotesNormal:any[],lotesEspecial:any[],flag_camarote:string){
+  updateFesta(chave:string, nome:string, flag_alimento:string, flag_sexo:string,lotesNormal:any[],lotesEspecial:any[],flag_camarote:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('nome',nome)
-    body.set('lote',lote)
     body.set('flag_sexo',flag_sexo)
     body.set('flag_alimento',flag_alimento)
     body.set('flag_camarote',flag_camarote)

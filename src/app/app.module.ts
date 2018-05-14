@@ -18,6 +18,7 @@ import { ComponentsModule } from "../components/components.module";
 import { DirectivesModule } from "../directives/directives.module";
 import { SettingsComponent } from '../components/settings/settings';
 import { ConfigFestaComponent } from "../components/config-festa/config-festa";
+import { File } from "@ionic-native/file";
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ConfigFestaComponent } from "../components/config-festa/config-festa";
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     PcaProvider,
-    Session
+    Session,
+    File
   ]
 })
 export class AppModule {}

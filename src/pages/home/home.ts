@@ -5,7 +5,7 @@ import { NavController } from 'ionic-angular';
 import { Session } from '../../providers/session/session';
 import { Usuario } from '../../app/models/usuario';
 import { Data } from '../../app/models/data';
-
+import { AlertController } from 'ionic-angular';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -14,7 +14,7 @@ import { Data } from '../../app/models/data';
 export class HomePage {
   vendedor: Usuario;
 
-  constructor(public navCtrl: NavController,public service: PcaProvider,public session: Session) {
+  constructor(public navCtrl: NavController,public service: PcaProvider,public session: Session,public alertCtrl: AlertController) {
     this.session.get().then(res => {
       var logado = res?true:false
       if(logado){
@@ -31,12 +31,25 @@ export class HomePage {
   retorno = "";
   ret = "";
   login(){
+    var alert1 = this.alertCtrl.create({
+    title: 'Erro Login',
+    subTitle: 'Erro Antes',
+    buttons: ['OK']
+    });
+    alert1.present();
     this.service.getUsuario('lista',this.usuario.registro,this.usuario.senha)
     .subscribe((data:Data)=> {
       if(data.message){
         this.vendedor = data.jsonRetorno[0];
         this.criaSession();
         this.navCtrl.push("TelaPrincipalPage",this.vendedor)
+      }else{
+        var alert = this.alertCtrl.create({
+          title: 'Erro ao login',
+          subTitle: 'var '+this.usuario.registro+' - '+this.usuario.senha,
+          buttons: ['OK']
+        });
+        alert.present();
       }
     })
 

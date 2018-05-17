@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-
+import { AlertController } from 'ionic-angular';
 /*
   Generated class for the PcaProvider provider.
 
@@ -11,9 +11,10 @@ import { URLSearchParams } from '@angular/http';
 */
 @Injectable()
 export class PcaProvider {
-  private urlApi = 'http://www.hector.local/projetoCaApi/'
 
-  constructor(public http: HttpClient) {
+  private urlApi = 'http://127.0.0.1:5000/'
+
+  constructor(public http: HttpClient,public alertCtrl: AlertController) {
 
   }
 
@@ -23,7 +24,12 @@ export class PcaProvider {
     var body = new URLSearchParams();
     body.set('usuario',usuario)
     body.set('senha',senha)
-
+    var alert = this.alertCtrl.create({
+      title: 'Erro pca',
+      subTitle: 'var '+usuario+''+senha,
+      buttons: ['OK']
+    });
+    alert.present();
     return this.http.post(
       url,
       body.toString(),

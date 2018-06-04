@@ -12,7 +12,7 @@ import { AlertController } from 'ionic-angular';
 @Injectable()
 export class PcaProvider {
 
-  private urlApi = 'http://127.0.0.1:5000/'
+  private urlApi = 'http://www.hector.local/'
 
   constructor(public http: HttpClient,public alertCtrl: AlertController) {
 

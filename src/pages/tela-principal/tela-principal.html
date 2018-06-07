@@ -1,7 +1,7 @@
-<ion-header>
+﻿<ion-header>
 
   <ion-navbar>
-    <ion-title>{{festa_config.nome}}</ion-title>
+    <ion-title>{{vendedor.nome}}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="openSettings($event)">
@@ -128,7 +128,7 @@
         <ion-toggle color="dark"[(ngModel)]="comprador.alimento"></ion-toggle>
       </ion-item>
     </ion-list>
-    <ion-list *ngIf="comprador.ingresso">
+    <ion-list *ngIf="comprador.sexo">
       <button ion-item (click)="updateVenda()" >
           <ion-icon name="checkmark" item-start></ion-icon>
         Finalizar venda

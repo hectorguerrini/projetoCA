@@ -24,12 +24,7 @@ export class PcaProvider {
     var body = new URLSearchParams();
     body.set('usuario',usuario)
     body.set('senha',senha)
-    var alert = this.alertCtrl.create({
-      title: 'Erro pca',
-      subTitle: 'var '+usuario+''+senha,
-      buttons: ['OK']
-    });
-    alert.present();
+    
     return this.http.post(
       url,
       body.toString(),

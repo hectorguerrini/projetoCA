@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { PcaProvider } from '../../providers/pca/pca';
 import { NavController } from 'ionic-angular';
 
@@ -31,12 +31,7 @@ export class HomePage {
   retorno = "";
   ret = "";
   login(){
-    var alert1 = this.alertCtrl.create({
-    title: 'Erro Login',
-    subTitle: 'Erro Antes',
-    buttons: ['OK']
-    });
-    alert1.present();
+    
     this.service.getUsuario('lista',this.usuario.registro,this.usuario.senha)
     .subscribe((data:Data)=> {
       if(data.message){
@@ -44,12 +39,7 @@ export class HomePage {
         this.criaSession();
         this.navCtrl.push("TelaPrincipalPage",this.vendedor)
       }else{
-        var alert = this.alertCtrl.create({
-          title: 'Erro ao login',
-          subTitle: 'var '+this.usuario.registro+' - '+this.usuario.senha,
-          buttons: ['OK']
-        });
-        alert.present();
+        
       }
     })
 

@@ -2,9 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { AlertController } from 'ionic-angular';
-/*
-  Generated class for the PcaProvider provider.
+
+ /* Generated class for the PcaProvider provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
@@ -12,9 +11,9 @@ import { AlertController } from 'ionic-angular';
 @Injectable()
 export class PcaProvider {
 
-  private urlApi = 'http://www.hector.local/'
+  private urlApi = 'http://caeem.br/api/'
 
-  constructor(public http: HttpClient,public alertCtrl: AlertController) {
+  constructor(public http: HttpClient) {
 
   }
 
@@ -24,12 +23,6 @@ export class PcaProvider {
     var body = new URLSearchParams();
     body.set('usuario',usuario)
     body.set('senha',senha)
-    var alert = this.alertCtrl.create({
-      title: 'Erro pca',
-      subTitle: 'var '+usuario+''+senha,
-      buttons: ['OK']
-    });
-    alert.present();
     return this.http.post(
       url,
       body.toString(),

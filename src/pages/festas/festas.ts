@@ -6,7 +6,6 @@ import { PcaProvider } from "../../providers/pca/pca";
 import { Data } from "../../app/models/data";
 
 
-
 /**
  * Generated class for the FestasPage page.
  *
@@ -37,9 +36,12 @@ export class FestasPage {
     .subscribe((data:Data) => {
       if(data.message){
         this.lista_festas = data.jsonRetorno;
+
       }
 
     })
   }
+
+
 
 }

@@ -2,9 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Injectable } from '@angular/core';
 import { URLSearchParams } from '@angular/http';
-import { AlertController } from 'ionic-angular';
-/*
-  Generated class for the PcaProvider provider.
+
+ /* Generated class for the PcaProvider provider.
 
   See https://angular.io/guide/dependency-injection for more info on providers
   and Angular DI.
@@ -12,9 +11,9 @@ import { AlertController } from 'ionic-angular';
 @Injectable()
 export class PcaProvider {
 
-  private urlApi = 'http://192.168.0.44:5000/'
+  private urlApi = 'http://caeem.br/vendas/'
 
-  constructor(public http: HttpClient,public alertCtrl: AlertController) {
+  constructor(public http: HttpClient) {
 
   }
 
@@ -24,7 +23,6 @@ export class PcaProvider {
     var body = new URLSearchParams();
     body.set('usuario',usuario)
     body.set('senha',senha)
-    
     return this.http.post(
       url,
       body.toString(),
@@ -98,11 +96,10 @@ export class PcaProvider {
     )
   }
 
-  updateFesta(chave:string, nome:string, lote:string, flag_alimento:string, flag_sexo:string,lotesNormal:any[],lotesEspecial:any[],flag_camarote:string){
+  updateFesta(chave:string, nome:string, flag_alimento:string, flag_sexo:string,lotesNormal:any[],lotesEspecial:any[],flag_camarote:string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('nome',nome)
-    body.set('lote',lote)
     body.set('flag_sexo',flag_sexo)
     body.set('flag_alimento',flag_alimento)
     body.set('flag_camarote',flag_camarote)

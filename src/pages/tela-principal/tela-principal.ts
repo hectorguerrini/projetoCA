@@ -176,7 +176,7 @@ export class TelaPrincipalPage {
         this.service.updateVenda(
           'update_venda',
           this.comprador.id,
-          this.vendedor.id_aluno,
+          this.vendedor.id,
           this.comprador.valor.toString(),
           this.comprador.alimento?"1":"0",
           this.comprador.sexo,
@@ -203,7 +203,7 @@ export class TelaPrincipalPage {
         this.service.updateVendaConvidado(
           'update_venda_convidado',
           this.comprador.registro,
-          this.vendedor.id_aluno,
+          this.vendedor.id,
           this.comprador.valor.toString(),
           this.comprador.alimento?"1":"0",
           this.comprador.sexo,
@@ -270,6 +270,7 @@ export class TelaPrincipalPage {
     .subscribe((data:Data) => {
         if(data.message){
           this.festa_config = data.jsonRetorno[0];
+          this.festa_config.lote_ativo=1;
           this.getComboFesta();
         }
     })

@@ -5,7 +5,6 @@ import { NavController } from 'ionic-angular';
 import { Session } from '../../providers/session/session';
 import { Usuario } from '../../app/models/usuario';
 import { Data } from '../../app/models/data';
-import { AlertController } from 'ionic-angular';
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html',
@@ -14,7 +13,7 @@ import { AlertController } from 'ionic-angular';
 export class HomePage {
   vendedor: Usuario;
 
-  constructor(public navCtrl: NavController,public service: PcaProvider,public session: Session,public alertCtrl: AlertController) {
+  constructor(public navCtrl: NavController,public service: PcaProvider,public session: Session) {
     this.session.get().then(res => {
       var logado = res?true:false
       if(logado){
@@ -31,15 +30,16 @@ export class HomePage {
   retorno = "";
   ret = "";
   login(){
-    
+
     this.service.getUsuario('lista',this.usuario.registro,this.usuario.senha)
     .subscribe((data:Data)=> {
       if(data.message){
         this.vendedor = data.jsonRetorno[0];
         this.criaSession();
         this.navCtrl.push("TelaPrincipalPage",this.vendedor)
+
       }else{
-        
+
       }
     })
 

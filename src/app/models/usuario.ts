@@ -6,7 +6,7 @@ export class Model {
 }
 //classe usuario extendendo a classe Model
 export class Usuario extends Model {
-    id_aluno:string;
+    id:string;
     nome: string;
     registro: string;
 }

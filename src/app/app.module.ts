@@ -19,6 +19,7 @@ import { DirectivesModule } from "../directives/directives.module";
 import { SettingsComponent } from '../components/settings/settings';
 import { ConfigFestaComponent } from "../components/config-festa/config-festa";
 
+
 @NgModule({
   declarations: [
     MyApp,

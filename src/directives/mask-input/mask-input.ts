@@ -20,6 +20,9 @@ export class MaskInputDirective {
 
 
   onInputChange(ev) {
+    if (!this.model.value) {
+      return;
+    }
     var valor = this.model.value.replace(/\D/g, '');
     var pad = this.Mask.replace(/\D/g, '').replace(/9/g, '_');
     var valorMask = valor + pad.substring(0, pad.length - valor.length);

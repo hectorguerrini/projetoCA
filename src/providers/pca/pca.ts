@@ -11,7 +11,7 @@ import { URLSearchParams } from '@angular/http';
 @Injectable()
 export class PcaProvider {
 
-  private urlApi = 'http://caeem.br/vendas/'
+  private urlApi = 'http://localhost/vendas/'
 
   constructor(public http: HttpClient) {
 

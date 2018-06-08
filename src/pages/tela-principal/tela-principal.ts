@@ -65,8 +65,7 @@ export class TelaPrincipalPage {
     valor:null,
     novo:null,
     alimento:null,
-    periodo:null,
-    quantidade:1
+    periodo:null
   }
   lotes_pista_aluno=[]
   lotes_pista_naluno=[]
@@ -90,8 +89,7 @@ export class TelaPrincipalPage {
       valor:null,
       novo:null,
       alimento:null,
-      periodo:null,
-      quantidade:1
+      periodo:null
     }
     this.comprador.tipo = newObj;
     this.buscar=true;

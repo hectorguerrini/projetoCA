@@ -92,15 +92,15 @@
 
     <ion-list *ngIf="comprador.tipo=='1' && (comprador.nome || comprador.novo)" class="select">
 
-      <ion-item col-sm-6 style="float:left;">
+      <ion-item  >
         <ion-label *ngIf="comprador.novo">Nome Comprador:</ion-label>
         <ion-label *ngIf="!comprador.novo" style="text-align:center;">{{comprador.nome}}</ion-label>
         <ion-input *ngIf="comprador.novo" type="text" [(ngModel)]="comprador.nome"></ion-input>
       </ion-item>
-      <ion-item col-sm-6 style="float: left;">
+      <!-- <ion-item col-sm-6 style="float: left;">
         <ion-label>Quantidade:</ion-label>
         <ion-input type="number" [(ngModel)]="comprador.quantidade"></ion-input>
-      </ion-item>
+      </ion-item> -->
       <ion-item class="label-button">
         <ion-label>Sexo</ion-label>
       </ion-item>

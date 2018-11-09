@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams,PopoverController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, PopoverController } from 'ionic-angular';
 import { PcaProvider } from '../../providers/pca/pca';
 
 import { Storage } from "@ionic/storage";
@@ -14,7 +14,7 @@ import { AlertController } from 'ionic-angular';
 @Component({
   selector: 'page-tela-principal',
   templateUrl: 'tela-principal.html',
-  providers: [PcaProvider,Session]
+  providers: [PcaProvider, Session]
 })
 export class TelaPrincipalPage {
 
@@ -32,67 +32,70 @@ export class TelaPrincipalPage {
     this.getFesta();
 
   }
-  vendedor:Usuario;
-  ngOnInit(){
+
+  vendas = 'vendas';
+  vendedor: Usuario;
+  listDel: Array<any>;
+  ngOnInit() {
     this.session.get()
-    .then(res => {
+      .then(res => {
         this.vendedor = new Usuario(res);
 
-    });
+      });
 
   }
 
-  openSettings(ev){
+  openSettings(ev) {
     let popover = this.popoverCtrl.create(SettingsComponent);
-    popover.present({ev:ev});
+    popover.present({ ev: ev });
 
   }
-  festa_config={
-    nome:"",
-    lote_ativo:1,
-    flag_alimento:false,
-    flag_sexo:false,
-    id_festa:null,
-    flag_camarote:false
+  festa_config = {
+    nome: "",
+    lote_ativo: 1,
+    flag_alimento: false,
+    flag_sexo: false,
+    id_festa: null,
+    flag_camarote: false
   }
-  comprador={
-    id:null,
-    tipo:null,
-    ingresso:null,
-    registro:null,
-    nome:null,
-    sexo:null,
-    valor:null,
-    novo:null,
-    alimento:null,
-    periodo:null
+  comprador = {
+    id: null,
+    tipo: null,
+    ingresso: null,
+    registro: null,
+    nome: null,
+    sexo: null,
+    valor: null,
+    novo: null,
+    alimento: null,
+    periodo: null
   }
-  lotes_pista_aluno=[]
-  lotes_pista_naluno=[]
-  lotes_camarote_aluno=[]
-  lotes_camarote_naluno=[]
+  lotes_pista_aluno = []
+  lotes_pista_naluno = []
+  lotes_camarote_aluno = []
+  lotes_camarote_naluno = []
 
 
-  baseConvidado=[
-    {nome:'HECTOR GUERRINI HERRERA',registro:'446.847.728-88'}
+  baseConvidado = [
+    { nome: 'HECTOR GUERRINI HERRERA', registro: '446.847.728-88' }
   ]
-  data=[];
-  buscar=true;
-  setTipo(newObj){
-    this.comprador={
-      id:null,
-      tipo:null,
-      ingresso:null,
-      registro:null,
-      nome:null,
-      sexo:null,
-      valor:null,
-      novo:null,
-      alimento:null,
-      periodo:null
+  data = [];
+  buscar = true;
+  setTipo(newObj) {
+    this.comprador = {
+      id: null,
+      tipo: null,
+      ingresso: null,
+      registro: null,
+      nome: null,
+      sexo: null,
+      valor: null,
+      novo: null,
+      alimento: null,
+      periodo: null
     }
     this.comprador.tipo = newObj;
-    this.buscar=true;
+    this.buscar = true;
     //this.verificarValor();
   }
 
@@ -106,37 +109,59 @@ export class TelaPrincipalPage {
   //   }
   // }
 
-  getInfos(){
-    if(this.comprador.tipo=="0"){
-      this.service.getAluno('detalhes',this.comprador.registro,this.festa_config.id_festa)
-    .subscribe((data:Data)=> {
-      if(data.message){
-        this.comprador.nome = data.jsonRetorno[0].nome;
-        this.comprador.id = data.jsonRetorno[0].id_aluno;
-        this.comprador.periodo = data.jsonRetorno[0].periodo;
-        this.buscar=false;
-      }else if(data.jsonRetorno.length > 0){
+  getInfos() {
+    if (this.comprador.tipo == "0") {
+      this.service.getAluno('detalhes', this.comprador.registro, this.festa_config.id_festa)
+        .subscribe((data: Data) => {
+          if (data.message) {
+            this.comprador.nome = data.jsonRetorno[0].nome;
+            this.comprador.id = data.jsonRetorno[0].id_aluno;
+            this.comprador.periodo = data.jsonRetorno[0].periodo;
+            this.buscar = false;
+          } else if (data.jsonRetorno.length > 0) {
+            if(this.vendas == 'delete'){
+              this.listDel = data.jsonRetorno;
+            } else {
+              var alert = this.alertCtrl.create({
+                title: 'Erro ao buscar aluno',
+                subTitle: 'Venda já registrada em ' + data.jsonRetorno[0].data_venda + '.',
+                buttons: ['OK']
+              });
+              alert.present();
+            }
 
-        var alert = this.alertCtrl.create({
-          title: 'Erro ao buscar aluno',
-          subTitle: 'Venda já registrada em '+data.jsonRetorno[0].data_venda+'.',
-          buttons: ['OK']
-        });
-        alert.present();
-      }else{
-        var alertError = this.alertCtrl.create({
-          title: 'Erro',
-          subTitle: 'Aluno não encontrado',
-          buttons: ['OK']
-        });
-        alertError.present();
-      }
-    })
-    }else if(this.comprador.tipo=="1"){
-      if(this.TestaCPF(this.comprador.registro)){
-        this.buscar=false;
-        this.comprador.novo=true;
-      }else{
+          } else {
+            var alertError = this.alertCtrl.create({
+              title: 'Erro',
+              subTitle: 'Aluno não encontrado',
+              buttons: ['OK']
+            });
+            alertError.present();
+          }
+        })
+    } else if (this.comprador.tipo == "1") {
+      if (this.TestaCPF(this.comprador.registro)) {
+        this.buscar = false;
+        if (this.vendas == 'delete') {
+          this.service.getConvidado('detalhes_convidado', this.comprador.registro, this.festa_config.id_festa)
+            .subscribe((data: Data) => {
+              if (data.jsonRetorno.length > 0) {
+                this.listDel = data.jsonRetorno;
+              } else {
+                this.listDel = [];
+                var alertError = this.alertCtrl.create({
+                  title: 'Erro',
+                  subTitle: 'Nenhum registro encontrado',
+                  buttons: ['OK']
+                });
+                alertError.present();
+              }
+            })
+        } else {
+          this.comprador.novo = true;
+        }
+
+      } else {
         var alertError = this.alertCtrl.create({
           title: 'Erro de CPF',
           subTitle: 'CPF Inválido',
@@ -146,6 +171,8 @@ export class TelaPrincipalPage {
       }
 
     }
+
+
 
     // if(this.comprador.tipo=='0'){
     //   this.data = this.base.filter(b => b.registro === this.comprador.registro);
@@ -158,110 +185,135 @@ export class TelaPrincipalPage {
     //   this.buscar=this.data.length>0?false:true;
     // }
   }
-  updateVenda(){
-      if(this.comprador.tipo=='0'){
-        this.comprador.valor = ((this.comprador.ingresso=='Pista' || !this.festa_config.flag_camarote?(this.lotes_pista_aluno[this.festa_config.lote_ativo-1].label):(this.lotes_camarote_aluno[this.festa_config.lote_ativo-1].label)) - (this.comprador.alimento ? 5 : 0) )
-        this.service.updateVenda(
-          'update_venda',
-          this.comprador.id,
-          this.vendedor.id,
-          this.comprador.valor.toString(),
-          this.comprador.alimento?"1":"0",
-          this.comprador.sexo,
-          this.festa_config.lote_ativo.toString(),
-          this.festa_config.id_festa
-        )
-        .subscribe((data:Data) =>{
-          if(data.message){
-            this.zerarForm('save');
-
-          }else{
-
-            var alert = this.alertCtrl.create({
-              title: 'Erro ao finalizar venda',
-              subTitle: 'Venda já registrada em '+data.jsonRetorno[0].data_venda+' .',
-              buttons: ['OK']
-            });
-            alert.present();
-
-          }
-        })
-      }else if(this.comprador.tipo=='1'){
-        this.comprador.valor = ((this.comprador.ingresso=='Pista' || !this.festa_config.flag_camarote?(this.lotes_pista_naluno[this.festa_config.lote_ativo-1].label):(this.lotes_camarote_naluno[this.festa_config.lote_ativo-1].label)) - (this.comprador.alimento ? 5 : 0) )
-        this.service.updateVendaConvidado(
-          'update_venda_convidado',
-          this.comprador.registro,
-          this.vendedor.id,
-          this.comprador.valor.toString(),
-          this.comprador.alimento?"1":"0",
-          this.comprador.sexo,
-          this.comprador.nome,
-          this.festa_config.lote_ativo.toString(),
-          this.festa_config.id_festa
-        )
-        .subscribe((data:Data) =>{
-          if(data.message){
-            this.zerarForm('save');
-
-          }else{
-
-            var alert = this.alertCtrl.create({
-              title: 'Erro ao finalizar venda',
-              subTitle: 'Venda já registrada em '+data.jsonRetorno[0].data_venda+' .',
-              buttons: ['OK']
-            });
-            alert.present();
-
-          }
-        })
 
 
 
+  delVenda(id) {
+    var tipo = this.comprador.tipo=='0' ? 'aluno' : 'convidado';
+    this.service.delVenda('delVenda',id,tipo)
+    .subscribe((data:Data) =>{
+      if(data.jsonRetorno.length > 0) {
+        var alertError2 = this.alertCtrl.create({
+          title: 'Sucesso',
+          subTitle: 'Deletado com sucesso',
+          buttons: ['OK']
+        });
+        alertError2.present();
+        this.getInfos();
+      } else {
+        var alertError = this.alertCtrl.create({
+          title: 'Erro ao deletar',
+          subTitle: 'tente mais tarde',
+          buttons: ['OK']
+        });
+        alertError.present();
       }
+    })
+  }
+  updateVenda() {
+    if (this.comprador.tipo == '0') {
+      this.comprador.valor = ((this.comprador.ingresso == 'Pista' || !this.festa_config.flag_camarote ? (this.lotes_pista_aluno[this.festa_config.lote_ativo - 1].label) : (this.lotes_camarote_aluno[this.festa_config.lote_ativo - 1].label)) - (this.comprador.alimento ? 5 : 0))
+      this.service.updateVenda(
+        'update_venda',
+        this.comprador.id,
+        this.vendedor.id,
+        this.comprador.valor.toString(),
+        this.comprador.alimento ? "1" : "0",
+        this.comprador.sexo,
+        this.festa_config.lote_ativo.toString(),
+        this.festa_config.id_festa
+      )
+        .subscribe((data: Data) => {
+          if (data.message) {
+            this.zerarForm('save');
+
+          } else {
+
+            var alert = this.alertCtrl.create({
+              title: 'Erro ao finalizar venda',
+              subTitle: 'Venda já registrada em ' + data.jsonRetorno[0].data_venda + ' .',
+              buttons: ['OK']
+            });
+            alert.present();
+
+          }
+        })
+    } else if (this.comprador.tipo == '1') {
+      this.comprador.valor = ((this.comprador.ingresso == 'Pista' || !this.festa_config.flag_camarote ? (this.lotes_pista_naluno[this.festa_config.lote_ativo - 1].label) : (this.lotes_camarote_naluno[this.festa_config.lote_ativo - 1].label)) - (this.comprador.alimento ? 5 : 0))
+      this.service.updateVendaConvidado(
+        'update_venda_convidado',
+        this.comprador.registro,
+        this.vendedor.id,
+        this.comprador.valor.toString(),
+        this.comprador.alimento ? "1" : "0",
+        this.comprador.sexo,
+        this.comprador.nome,
+        this.festa_config.lote_ativo.toString(),
+        this.festa_config.id_festa
+      )
+        .subscribe((data: Data) => {
+          if (data.message) {
+            this.zerarForm('save');
+
+          } else {
+
+            var alert = this.alertCtrl.create({
+              title: 'Erro ao finalizar venda',
+              subTitle: 'Venda já registrada em ' + data.jsonRetorno[0].data_venda + ' .',
+              buttons: ['OK']
+            });
+            alert.present();
+
+          }
+        })
+
+
+
+    }
 
   }
 
-  zerarForm(evento){
+  zerarForm(evento) {
     this.comprador.id = null;
     this.comprador.nome = null;
     this.comprador.sexo = null;
     this.comprador.novo = null;
-    this.comprador.registro = evento == 'save' ?null : this.comprador.registro;
+    this.comprador.registro = evento == 'save' ? null : this.comprador.registro;
     this.buscar = true;
 
   }
-  registroChange(){
-    if(this.comprador.tipo=='0' && this.comprador.registro.length<10 && this.comprador.nome){
+  registroChange() {
+    if (this.comprador.tipo == '0' && this.comprador.registro.length < 10 && this.comprador.nome) {
       this.zerarForm('change');
 
-    }else if(this.comprador.tipo=='1' && this.comprador.registro.length<14 && (this.comprador.nome || this.comprador.novo)){
+    } else if (this.comprador.tipo == '1' && this.comprador.registro.length < 14 && (this.comprador.nome || this.comprador.novo)) {
       this.zerarForm('change');
     }
   }
 
-  getComboFesta(){
-    this.service.getComboLote('get_lotes',this.festa_config.id_festa)
-    .subscribe((data:Data) => {
-        if(data.message){
-          this.lotes_pista_aluno = data.jsonRetorno.filter(function(d){return d.tipo == 'pista' && d.aluno == 'aluno'});
-          this.lotes_pista_naluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'pista' && d.aluno == 'naluno'});
-          this.lotes_camarote_aluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'camarote' && d.aluno == 'aluno'});
-          this.lotes_camarote_naluno = data.jsonRetorno.filter(function(d){ return d.tipo == 'camarote' && d.aluno == 'naluno'});
+  getComboFesta() {
+    this.service.getComboLote('get_lotes', this.festa_config.id_festa)
+      .subscribe((data: Data) => {
+        if (data.message) {
+          this.lotes_pista_aluno = data.jsonRetorno.filter(function (d) { return d.tipo == 'pista' && d.aluno == 'aluno' });
+          this.lotes_pista_naluno = data.jsonRetorno.filter(function (d) { return d.tipo == 'pista' && d.aluno == 'naluno' });
+          this.lotes_camarote_aluno = data.jsonRetorno.filter(function (d) { return d.tipo == 'camarote' && d.aluno == 'aluno' });
+          this.lotes_camarote_naluno = data.jsonRetorno.filter(function (d) { return d.tipo == 'camarote' && d.aluno == 'naluno' });
 
         }
-    })
+      })
 
   }
 
-  getFesta(){
+  getFesta() {
     this.service.getFesta('get_festa')
-    .subscribe((data:Data) => {
-        if(data.message){
+      .subscribe((data: Data) => {
+        if (data.message) {
           this.festa_config = data.jsonRetorno[0];
-          this.festa_config.lote_ativo=1;
+          this.festa_config.lote_ativo = 1;
           this.getComboFesta();
         }
-    })
+      })
 
   }
 
@@ -269,23 +321,23 @@ export class TelaPrincipalPage {
     var Soma;
     var Resto;
     Soma = 0;
-    strCPF = strCPF.replace(/[^\d]+/g,'');
+    strCPF = strCPF.replace(/[^\d]+/g, '');
     if (strCPF == "00000000000") return false;
 
-    for (var i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
+    for (var i = 1; i <= 9; i++) Soma = Soma + parseInt(strCPF.substring(i - 1, i)) * (11 - i);
     Resto = (Soma * 10) % 11;
 
-    if ((Resto == 10) || (Resto == 11))  Resto = 0;
-    if (Resto != parseInt(strCPF.substring(9, 10)) ) return false;
+    if ((Resto == 10) || (Resto == 11)) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(9, 10))) return false;
 
     Soma = 0;
-    for (var j = 1; j <= 10; j++) Soma = Soma + parseInt(strCPF.substring(j-1, j)) * (12 - j);
+    for (var j = 1; j <= 10; j++) Soma = Soma + parseInt(strCPF.substring(j - 1, j)) * (12 - j);
     Resto = (Soma * 10) % 11;
 
-    if ((Resto == 10) || (Resto == 11))  Resto = 0;
-    if (Resto != parseInt(strCPF.substring(10, 11) ) ) return false;
+    if ((Resto == 10) || (Resto == 11)) Resto = 0;
+    if (Resto != parseInt(strCPF.substring(10, 11))) return false;
     return true;
-}
+  }
 
 
 }

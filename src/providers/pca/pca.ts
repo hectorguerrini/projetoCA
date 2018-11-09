@@ -11,7 +11,7 @@ import { URLSearchParams } from '@angular/http';
 @Injectable()
 export class PcaProvider {
 
-  private urlApi = 'localhost/projetocaapi/'
+  private urlApi = '../vendas/'
 
   constructor(public http: HttpClient) {
 
@@ -45,10 +45,11 @@ export class PcaProvider {
       }
     )
   }
-  getConvidado(chave:string, cpf:string){
+  getConvidado(chave:string, cpf:string, id_festa: string){
     var url = this.urlApi+chave;
     var body = new URLSearchParams();
     body.set('cpf',cpf)
+    body.set('id_festa',id_festa)
 
    return this.http.post(
       url,
@@ -125,4 +126,13 @@ export class PcaProvider {
     body.set('id_festa',id_festa)
     return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
   }
+  delVenda(chave:string,id_venda:string, tipo:string){
+    var url = this.urlApi+chave;
+    var body = new URLSearchParams();
+    body.set('id',id_venda)
+    body.set('tipo',tipo)
+    return this.http.post(url,body.toString(),{headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')})
+  }
+
+
 }

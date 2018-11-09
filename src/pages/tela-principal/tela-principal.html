@@ -1,7 +1,7 @@
-<ion-header>
+﻿<ion-header>
 
   <ion-navbar>
-    <ion-title>{{festa_config.nome}}</ion-title>
+    <ion-title>{{festa_config.nome}} - User:{{vendedor.nome}}</ion-title>
 
     <ion-buttons end>
       <button ion-button icon-only (click)="openSettings($event)">
@@ -15,7 +15,12 @@
 <ion-content>
   <ion-card>
     <ion-list-header>
-      <ion-icon name="cart" item-start></ion-icon>
+      <button ion-button icon-only (click)="vendas='vendas'">
+        <ion-icon name="cart" item-start></ion-icon>
+      </button>
+      <button ion-button icon-only (click)="vendas='delete'" >
+        <ion-icon name="trash" item-start></ion-icon>
+      </button>
       Vendas
     </ion-list-header>
     <ion-list class="select">
@@ -47,7 +52,20 @@
       </button>
     </ion-list>
 
-    <ion-list *ngIf="comprador.tipo=='0' && comprador.nome" class="select">
+    <!-- Delete -->
+    <ion-list *ngIf="vendas == 'delete'">
+      <ion-item *ngFor="let item of listDel">
+        <ion-label>
+          {{item.nome}}
+        </ion-label>
+        <button ion-button icon-only (click)="delVenda(item.id_venda)"  >
+          <ion-icon name="trash" item-start></ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+
+    <!-- Vendas -->
+    <ion-list *ngIf="comprador.tipo=='0' && comprador.nome && vendas !== 'delete'" class="select">
 
       <ion-item>
         <ion-label style="text-align:center;">{{comprador.nome}} - {{comprador.periodo}}</ion-label>
@@ -90,7 +108,7 @@
       </ion-item>
     </ion-list>
 
-    <ion-list *ngIf="comprador.tipo=='1' && (comprador.nome || comprador.novo)" class="select">
+    <ion-list *ngIf="comprador.tipo=='1' && (comprador.nome || comprador.novo) && vendas !== 'delete'" class="select">
 
       <ion-item  >
         <ion-label *ngIf="comprador.novo">Nome Comprador:</ion-label>
@@ -131,8 +149,10 @@
         <ion-toggle color="dark"[(ngModel)]="comprador.alimento"></ion-toggle>
       </ion-item>
     </ion-list>
+
     <ion-list *ngIf="comprador.ingresso || (!festa_config.flag_camarote && comprador.sexo)">
       <button ion-button block (click)="updateVenda()" color="secondary" >
+
           <ion-icon name="checkmark" item-start></ion-icon>
         Finalizar venda
       </button>

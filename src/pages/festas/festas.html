@@ -18,13 +18,16 @@
     <ion-list>
       <ion-item *ngFor="let festa of lista_festas" >
         <ion-label>{{festa.nome}}</ion-label>
-      
+        <button ion-button outline item-end icon-start>
+          Left Icon
+        </button>
       </ion-item>
     </ion-list>
     <button ion-item (click)="editFesta()">
       <ion-icon item-start name="ios-add-circle-outline"></ion-icon>
       Criar Festa
     </button>
+
 
 
 

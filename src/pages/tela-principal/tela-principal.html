@@ -15,10 +15,10 @@
 <ion-content>
   <ion-card>
     <ion-list-header>
-      <button ion-button icon-only (click)="vendas='vendas'">
+      <button ion-button icon-only [outline]="vendas=='delete'" (click)="vendas='vendas'">
         <ion-icon name="cart" item-start></ion-icon>
       </button>
-      <button ion-button icon-only (click)="vendas='delete'" >
+      <button ion-button icon-only [outline]="vendas=='vendas'"(click)="vendas='delete'" >
         <ion-icon name="trash" item-start></ion-icon>
       </button>
       Vendas
